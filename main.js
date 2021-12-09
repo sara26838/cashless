@@ -679,7 +679,6 @@ class ListingComponent {
         this._customerService = _customerService;
         this.router = router;
         this.p = 1;
-        this.user = 'hghg';
         this.updateForm = new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormGroup"]({
             name: new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"](''),
             job: new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"](''),
@@ -698,13 +697,16 @@ class ListingComponent {
                     for (let j = 0; j < customerData.length; j++) {
                         this.customers.push(customerData[j]);
                     }
-                    localStorage.setItem(CACHE_KEY, JSON.stringify(this.customers));
+                    localStorage.setItem(CACHE_KEY, JSON.stringify(this.customers.reverse));
                     this._customerService
                         .getUsers2(i)
                         .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["startWith"])(JSON.parse(localStorage[CACHE_KEY] || '[]')));
                 });
             }
         });
+        if (localStorage.getItem(CACHE_KEY)) {
+            this.customers.reverse();
+        }
     }
     Search() {
         if (this.first_name == '') {
