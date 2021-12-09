@@ -1,0 +1,280 @@
+<div class="container mt-5">
+  <div class="row">
+    <p
+      (click)="LogOut()"
+      style="
+        text-align: right;
+        margin-bottom: 100px;
+        color: #f4623a;
+        cursor: pointer;
+      "
+    >
+      LogOut
+    </p>
+    <div class="col-md-12">
+      <nav>
+        <input
+          class="form-control"
+          type="text"
+          name="first_name"
+          [(ngModel)]="first_name"
+          (ngModelChange)="Search()"
+          placeholder="Search"
+        />
+      </nav>
+      <table class="table mt-5">
+        <thead>
+          <tr>
+            <th (click)="sort('id')">Id&nbsp;<i class="fa fa-sort"></i></th>
+            <th>Image</th>
+            <th (click)="sort('email')">
+              Email&nbsp;<i class="fa fa-sort"></i>
+            </th>
+            <th (click)="sort('first_name')">
+              First name&nbsp;<i class="fa fa-sort"></i>
+            </th>
+            <th (click)="sort('last_name')">
+              Last name&nbsp;<i class="fa fa-sort"></i>
+            </th>
+            <th>Job</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let user of customers
+                | orderBy: key:reverse
+                | paginate: { itemsPerPage: 6, currentPage: p };
+              trackBy: trackby
+            "
+          >
+            <td>{{ user.id }}</td>
+            <td><img [src]="[user.avatar]" /></td>
+            <td>{{ user.email }}</td>
+            <td #name [id]="user.id">{{ user.first_name }}</td>
+            <td>{{ user.last_name }}</td>
+            <td #job [id]="user.id">no job</td>
+            <td>
+              <button
+                (click)="getUserDetails(user.id)"
+                data-bs-toggle="modal"
+                [attr.data-bs-target]="'#' + user.last_name + user.id"
+                [id]="user.id"
+                class="btn btn-primary"
+              >
+                View
+              </button>
+            </td>
+            <td>
+              <button
+                (click)="getUser(user.id)"
+                data-bs-toggle="modal"
+                [attr.data-bs-target]="'#' + user.first_name + user.id"
+                [id]="user.id"
+                class="btn btn-success"
+              >
+                Edit
+              </button>
+            </td>
+
+            <td>
+              <button
+                (click)="delete(user.id)"
+                [id]="user.id"
+                class="btn btn-danger"
+              >
+                Delete
+              </button>
+            </td>
+
+            <!-- user update modal -->
+            <div
+              #model
+              class="modal fade"
+              [id]="user.first_name + user.id"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      Update User
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="formBox">
+                      <form
+                        [id]="user.id"
+                        (ngSubmit)="update($event)"
+                        [formGroup]="updateForm"
+                      >
+                        <div class="form-group" class="mb-5">
+                          <label>Name</label>
+                          <input
+                            formControlName="name"
+                            type="text"
+                            class="form-control"
+                            id="exampleInputEmail1"
+                            aria-describedby="emailHelp"
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label>Job</label>
+                          <input
+                            formControlName="job"
+                            type="text"
+                            class="form-control"
+                            id="exampleInputPassword1"
+                          />
+                        </div>
+
+                        <button
+                          type="submit"
+                          class="btn btn-success mt-3"
+                          style="margin-right: 20px"
+                        >
+                          Update
+                        </button>
+                        <button
+                          data-bs-dismiss="modal"
+                          class="btn btn-secondary mt-3"
+                        >
+                          Close
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- user update modal -->
+            <div
+              #model
+              class="modal fade"
+              [id]="user.first_name + user.id"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      Update User
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="formBox">
+                      <form
+                        [id]="user.id"
+                        (ngSubmit)="update($event)"
+                        [formGroup]="updateForm"
+                      >
+                        <div class="form-group" class="mb-5">
+                          <label>Name</label>
+                          <input
+                            formControlName="name"
+                            type="text"
+                            class="form-control"
+                            id="exampleInputEmail1"
+                            aria-describedby="emailHelp"
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label>Job</label>
+                          <input
+                            formControlName="job"
+                            type="text"
+                            class="form-control"
+                            id="exampleInputPassword1"
+                          />
+                        </div>
+
+                        <button
+                          type="submit"
+                          class="btn btn-success mt-3"
+                          style="margin-right: 20px"
+                        >
+                          Update
+                        </button>
+                        <button
+                          data-bs-dismiss="modal"
+                          class="btn btn-secondary mt-3"
+                        >
+                          Close
+                        </button>
+                      </form>
+                    </div>
+
+                    <p #updated class="updated">Data Updated</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- user Information modal -->
+            <div
+              class="modal fade"
+              [id]="user.last_name + user.id"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      User Info
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    <div style="margin: auto">
+                      <div>
+                        <img [src]="userImage" />
+                      </div>
+                      <div>
+                        <span class="title">First Name : </span>
+                        <span class="value">{{ userFirstname }}</span>
+                      </div>
+                      <div>
+                        <span class="title">Last Name : </span>
+                        <span class="value">{{ userLastname }}</span>
+                      </div>
+                      <div>
+                        <span class="title">Email : </span>
+                        <span class="value">{{ userEmail }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </tr>
+        </tbody>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </table>
+    </div>
+  </div>
+</div>

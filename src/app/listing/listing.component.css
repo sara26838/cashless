@@ -1,0 +1,14 @@
+.modal-body div {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    }
+.modal-body div .title{
+color: #f4623a;
+
+}
+.updated{
+    display: none;
+    color: green;
+    margin-top: 10px;
+}
+
