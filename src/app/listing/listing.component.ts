@@ -27,7 +27,6 @@ export class ListingComponent implements OnInit {
 
   first_name: any;
   p: number = 1;
-  user: any = 'hghg';
   userEmail: any;
   userFirstname: any;
   userLastname: any;
@@ -46,6 +45,7 @@ export class ListingComponent implements OnInit {
   });
   customers: Customers[] = [];
   ngOnInit(): void {
+    
     this._customerService.getUsers().subscribe((data) => {
       this.total_pages = data.total_pages;
 
@@ -54,14 +54,19 @@ export class ListingComponent implements OnInit {
           var customerData = response.data;
           for (let j = 0; j < customerData.length; j++) {
             this.customers.push(customerData[j]);
+            
           }
-          localStorage.setItem(CACHE_KEY, JSON.stringify(this.customers));
+          localStorage.setItem(CACHE_KEY, JSON.stringify(this.customers.reverse));
           this._customerService
             .getUsers2(i)
             .pipe(startWith(JSON.parse(localStorage[CACHE_KEY] || '[]')));
         });
       }
     });
+    if(localStorage.getItem(CACHE_KEY)){
+
+      this.customers.reverse();
+    }
   }
   Search() {
     if (this.first_name == '') {
